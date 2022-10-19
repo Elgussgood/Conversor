@@ -52,41 +52,134 @@ const styles = StyleSheet.create({
     borderColor: '#525900',
     backgroundColor: '#3F3F3F',
     minWidth: 5,
-    minHeight: 65,
+    minHeight: 70,
     flex: 1,
     alignItems: 'center',
     justifyContent: 'center',
     borderWidth: 1
+  },
+  txtacc:{
+    margin: 10,
+    fontSize: 50,
+    color: '#F7FF00'
+  },
+  grados: {
+    marginTop: -80,
+    backgroundColor: "#4B4B4B",
+    width: "50%",
+    height: 80,
+    minHeight: 20,
+    alignItems: "flex-start",
+    justifyContent: 'flex-start'
+  },
+  his:{
+    color:'#B5C300',
+    fontSize:30,
+    margin:10
   }
 })
 export default function App() {
 
   const [res, setRes] = useState("")
-
+  const [acc, setAcc] = useState("")
+  const [his, setHis] = useState("")
   function teclado(tecla) {
-
-    console.log(tecla);
-    var y
+    
     if (tecla === 'DEL' || tecla === 'AC' || tecla === 'CONVERTIR') {
-      console.log("no es numero");
+      var cara=""
+      var chi
+      switch(tecla){
+        case "AC":
+          muestra=""
+          console.log("se borro");
+          setRes(parseFloat(muestra))
+        break
+        case 'DEL':
+          if(muestra.length>=2){
+            let ola = 0
+          do{
+            cara +=" "+muestra.charAt(ola)
+            ola++
+          }while(ola<=muestra.length-1)
+            chi = cara.split(" ")
+            chi.pop()
+            ola=0
+            muestra=''
+          do{
+            muestra +=chi[ola]
+            console.log(chi[ola]);
+            ola++
+          }while(ola<=chi.length-1)
+          }else{
+            muestra=""
+          }
+          setRes(parseFloat(muestra))
+        break
+        case 'CONVERTIR':
+          let x = res
+          switch(acc){
+            case "C=>F":
+              x = x*1.8 
+              x=x+32
+              setRes(x)
+              setHis(res)
+            break;
+            case 'C=>K':
+              x=x+273.15
+              setRes(x)
+              setHis(res)
+            break;
+            case 'F=>C':
+              x = x-32
+              x = x/1.8
+              setRes(x)
+              setHis(res)
+            break;
+            case 'F=>K':
+              x=x-32  
+              x = x*.55555555
+              x=x+273.15
+              setRes(x)
+              setHis(res)
+            break;
+            case 'K=>C':
+              x=x-273.15
+              setRes(x)
+              setHis(res)
+            break;
+            case 'K=>F':
+              x=x-273.15
+              x = x*1.8 
+              x=x+32
+              setRes(x)
+              setHis(res)
+            break;
+          }
+        break
+      }
     } else {
       muestra += tecla
-      console.log("muestra" + muestra);
-      y = parseFloat(tecla)
-      x += y
-      console.log(x);
+      setRes(parseFloat(muestra))
     }
-    setRes(muestra)
+    
   }
+  function op(opc){
+    setAcc(opc)
+  }
+
 
   return (
     <View>
       <View style={styles.result}>
+      <Text style={styles.his}>{his}</Text>
         <Text style={styles.resultText}>{res}</Text>
+      </View>
+      <View style={styles.grados}>
+        <Text style={styles.txtacc}>{acc}</Text>
       </View>
       <View style={styles.options}>
         {options.map((opcion) =>
-          <TouchableOpacity key={opcion} style={styles.opcion}>
+          <TouchableOpacity key={opcion} style={styles.opcion} onPress={() => op(opcion)}>
             <Text style={styles.txtcolor}>{opcion}</Text>
           </TouchableOpacity>
         )}
